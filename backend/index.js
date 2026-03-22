@@ -1,7 +1,10 @@
 import express from "express";
 import dotenv from "dotenv";
+import connectDB from "./src/config/db.js";
 const app = express();
 dotenv.config();
+
+connectDB();
 
 app.get("/", (req, res) => {
   console.log("first");
