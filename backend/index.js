@@ -7,10 +7,11 @@ dotenv.config();
 
 connectDB();
 
-app.get("/", (req, res) => {
-  console.log("first");
-  res.send("server start");
-});
+//App setting
+
+app.use(express.json());
+
+//Base Routes
 app.use("/api/user", userRouter);
 
 const PORT = process.env.PORT;
