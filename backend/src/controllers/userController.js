@@ -1,5 +1,6 @@
 import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 export const register = async (req, res) => {
   const image = req.file?.filename;
   const { userName, email, password, phone } = req.body;
@@ -60,15 +61,23 @@ export const login = async (req, res) => {
       });
     }
 
-    return res.status(200).json({
-      success: true,
-      message: "Login Successfully",
-      user: {
+    const token = jwt.sign(
+      {
         id: userExist._id,
-        userName: userExist.userName,
+        role: userExist.role,
         email: userExist.email,
-        image: userExist.image,
       },
+      process.env.TOKEN_KEY,
+      {
+        expiresIn: "1d",
+      },
+    );
+    res.cookie("jwt_token", token).status(200).json({
+      status: 200,
+      success: true,
+      message: "User login successfully",
+      user: userExist,
+      token,
     });
   } catch (error) {
     return res.status(500).json({
@@ -76,5 +85,79 @@ export const login = async (req, res) => {
       message: "Internal Server Error",
       error: error.message,
     });
+  }
+};
+
+export const getUser = async (req, res) => {
+  res.status(200).json({
+    status: 200,
+    success: true,
+    message: "User found",
+    user: req.userInfo,
+  });
+};
+
+export const logout = async (req, res) => {
+  res.clearCookie("jwt_token").status(200).json({
+    status: 200,
+    success: true,
+    message: "User logout successfully",
+  });
+};
+
+export const getAllUser = async (req, res) => {
+  try {
+    const users = await User.find().select("-password -__v");
+
+    if (!users || users.length === 0) {
+      return res.status(404).json({
+        status: 404,
+        success: false,
+        message: "No users in database",
+      });
+    }
+    res.status(200).json({
+      status: 200,
+      success: true,
+      count: users.length,
+      message: "All users retrieved successfully",
+      users,
+    });
+  } catch (error) {
+    res.status(500).json({
+      status: 500,
+      success: false,
+      message: "Internal Server Error while fetching users",
+      error: error.message,
+    });
+  }
+};
+export const forgetPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    const resetToken = jwt.sign(
+      {
+        id: user._id,
+      },
+      process.env.JWT_TOKEN,
+      {
+        expiresIn: "1d",
+      },
+    );
+    res.status(200).json({
+      success: true,
+      message: "Reset token successfully",
+      resetToken,
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
   }
 };
