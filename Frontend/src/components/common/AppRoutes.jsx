@@ -11,6 +11,8 @@ import Design from "../../pages/Design";
 import DataScience from "../../pages/DataScience";
 import Wishlist from "../../pages/Wishlist";
 import Blog from "../../pages/Blog";
+import Login from "../../pages/Login";
+import Register from "../../pages/Register";
 
 const AppRoutes = () => {
   return (
@@ -31,6 +33,8 @@ const AppRoutes = () => {
         <Route path="/CoursesDetail" element={<CoursesDetail />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
       </Routes>
     </div>
   );

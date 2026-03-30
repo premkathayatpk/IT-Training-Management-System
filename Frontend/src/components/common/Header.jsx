@@ -68,17 +68,23 @@ const Header = () => {
               <FaHeart size={22} />
             </NavLink>
 
-            <NavLink
-              to="/profile"
-              className={({ isActive }) =>
-                isActive
-                  ? "text-blue-400"
-                  : "hover:text-blue-400 transition-transform hover:scale-110"
-              }
-              title="Profile"
-            >
+            {/* Profile */}
+            <div className="relative group cursor-pointer p-2">
+              {" "}
               <FaUserCircle size={24} />
-            </NavLink>
+              {/* Added 'top-full' to position it right below the icon */}
+              <div className="absolute hidden group-hover:flex flex-col bg-zinc-900 text-white py-2 px-3 w-30 rounded-md shadow-lg top-full right-0 z-50">
+                <NavLink to="/profile" className="hover:text-blue-400 py-1">
+                  Profile
+                </NavLink>
+                <NavLink to="/login" className="hover:text-blue-400 py-1">
+                  Login
+                </NavLink>
+                <NavLink to="/register" className="hover:text-blue-400 py-1">
+                  Register
+                </NavLink>
+              </div>
+            </div>
           </div>
         </div>
       </div>
