@@ -1,6 +1,39 @@
-import React from "react";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const { setUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    // console.log(email, password);
+    try {
+      // const loginData = { email, password };
+
+      //api call
+      const response = await axios.post(
+        "http://localhost:5000/api/user/login",
+        { email, password },
+        { withCredentials: true },
+      );
+
+      if (response.status === 200 || response.status === 201) {
+        // console.log(response.data);
+        setUser(response.data.user);
+        alert("Login Successful!");
+        navigate("/");
+      }
+    } catch (error) {
+      const message = error.response?.data?.message || "Login failed";
+      console.error("Login error:", error);
+      alert(message);
+    }
+  };
   return (
     <section className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
       <main className="w-full max-w-sm bg-white rounded-lg shadow-xl p-8">
@@ -10,7 +43,7 @@ const Login = () => {
           <p className="text-gray-500 text-sm">Welcome back!</p>
         </div>
 
-        <form className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit}>
           {/* Email */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -20,6 +53,11 @@ const Login = () => {
               type="email"
               placeholder="name@gmail.com"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+              value={email}
+              onChange={(e) => {
+                setEmail(e.target.value);
+              }}
+              required
             />
           </div>
 
@@ -37,6 +75,11 @@ const Login = () => {
               type="password"
               placeholder="••••••••"
               className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm"
+              value={password}
+              onChange={(e) => {
+                setPassword(e.target.value);
+              }}
+              required
             />
           </div>
 

@@ -31,9 +31,12 @@ const userSchema = new mongoose.Schema({
     trim: true,
     required: true,
   },
-  image: {
+  profile: {
     type: String,
     required: true,
+  },
+  bio: {
+    type: String,
   },
 });
 

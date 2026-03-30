@@ -2,10 +2,10 @@ import User from "../models/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 export const register = async (req, res) => {
-  const image = req.file?.filename;
-  const { userName, email, password, phone } = req.body;
+  const profile = req.file?.filename;
+  const { userName, email, password, phone, role, bio } = req.body;
 
-  if (!userName || !email || !password || !image || !phone) {
+  if (!userName || !email || !password || !profile || !phone || !role) {
     return res.status(400).json({ message: "All filed must filled !" });
   }
 
@@ -17,11 +17,13 @@ export const register = async (req, res) => {
   try {
     const hashPassword = await bcrypt.hash(password, 10);
     let userRes = new User({
-      image,
+      profile,
       userName,
       password: hashPassword,
       email,
       phone,
+      role,
+      bio,
     });
     userRes = await userRes.save();
     res.status(201).json({ message: "User register successfuly!" });
@@ -72,13 +74,28 @@ export const login = async (req, res) => {
         expiresIn: "1d",
       },
     );
-    res.cookie("jwt_token", token).status(200).json({
-      status: 200,
-      success: true,
-      message: "User login successfully",
-      user: userExist,
-      token,
-    });
+    const cookieOptions = {
+      httpOnly: true, // Correct: Prevents XSS attacks
+      secure: false, // Use 'false' for localhost (HTTP). Set to 'true' in production (HTTPS).
+      sameSite: "lax", // Vital for cross-site cookie sharing on localhost
+      maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+    };
+
+    return res
+      .status(200)
+      .cookie("jwt_token", token, cookieOptions) // Pass the options here
+      .json({
+        success: true,
+        message: `Welcome back ${userExist.userName}`,
+        user: {
+          _id: userExist._id,
+          userName: userExist.userName,
+          email: userExist.email,
+          role: userExist.role,
+          profile: userExist.profile,
+        },
+        token, // Optional: You can still send it in JSON if you want
+      });
   } catch (error) {
     return res.status(500).json({
       success: false,

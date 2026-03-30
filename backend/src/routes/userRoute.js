@@ -11,7 +11,7 @@ import upload from "../middleware/upload.js";
 import authMid from "../middleware/authMid.js";
 
 const userRouter = express.Router();
-userRouter.post("/register", upload.single("image"), register);
+userRouter.post("/register", upload.single("profile"), register);
 userRouter.post("/login", login);
 userRouter.get("/getUser", authMid, getUser);
 userRouter.get("/logout", authMid, logout);

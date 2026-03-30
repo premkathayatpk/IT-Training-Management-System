@@ -1,9 +1,11 @@
 import { NavLink } from "react-router-dom";
 import { FaHeart, FaUserCircle, FaSearch } from "react-icons/fa"; // Swapped to FaHeart
 import logo from "/image/logo.png";
+import { useContext } from "react";
+import { AuthContext } from "../../context/AuthProvider";
 
 const Header = () => {
-  // Helper for active link styling
+  const { user } = useContext(AuthContext);
   const activeLink = ({ isActive }) =>
     isActive
       ? "text-blue-400 border-b-2 border-blue-400 pb-1 transition-all"
@@ -69,20 +71,50 @@ const Header = () => {
             </NavLink>
 
             {/* Profile */}
-            <div className="relative group cursor-pointer p-2">
-              {" "}
-              <FaUserCircle size={24} />
-              {/* Added 'top-full' to position it right below the icon */}
-              <div className="absolute hidden group-hover:flex flex-col bg-zinc-900 text-white py-2 px-3 w-30 rounded-md shadow-lg top-full right-0 z-50">
-                <NavLink to="/profile" className="hover:text-blue-400 py-1">
-                  Profile
-                </NavLink>
-                <NavLink to="/login" className="hover:text-blue-400 py-1">
-                  Login
-                </NavLink>
-                <NavLink to="/register" className="hover:text-blue-400 py-1">
-                  Register
-                </NavLink>
+            <div className="relative group cursor-pointer py-2">
+              {user?.profile ? (
+                <img
+                  src={`http://localhost:5000/images/${user?.profile}`}
+                  alt="User"
+                  className="w-10 h-10 rounded-full object-cover border-2 border-blue-500 shadow-sm"
+                />
+              ) : (
+                <FaUserCircle
+                  size={32}
+                  className="text-slate-400 hover:text-white transition-colors"
+                />
+              )}
+
+              <div className="absolute hidden group-hover:flex flex-col bg-zinc-900 text-white py-2 px-4 w-40 rounded-md shadow-lg top-full right-0 z-50 border border-slate-800">
+                {user ? (
+                  <>
+                    <NavLink
+                      to="/profile"
+                      className="hover:text-blue-400 py-2 border-b border-slate-800"
+                    >
+                      My Profile
+                    </NavLink>
+                    {/* Usually Logout is a button, but NavLink works if you have a logout route */}
+                    <NavLink to="/logout" className="hover:text-red-400 py-2">
+                      Logout
+                    </NavLink>
+                  </>
+                ) : (
+                  <>
+                    <NavLink
+                      to="/login"
+                      className="hover:text-blue-400 py-2 border-b border-slate-800"
+                    >
+                      Login
+                    </NavLink>
+                    <NavLink
+                      to="/register"
+                      className="hover:text-blue-400 py-2"
+                    >
+                      Register
+                    </NavLink>
+                  </>
+                )}
               </div>
             </div>
           </div>

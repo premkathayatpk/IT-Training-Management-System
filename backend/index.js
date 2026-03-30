@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import connectDB from "./src/config/db.js";
 import userRouter from "./src/routes/userRoute.js";
 import courseRouter from "./src/routes/courseRoute.js";
+import cors from "cors";
 const app = express();
 dotenv.config();
 
@@ -12,13 +13,13 @@ connectDB();
 //App setting
 
 app.use(express.json());
-
 app.use(
   cors({
     origin: ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
   }),
 );
+app.use("/images", express.static("public/images"));
 
 app.use(cookieParser());
 
