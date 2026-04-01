@@ -11,7 +11,7 @@ const Logout = () => {
     const performLogout = async () => {
       try {
         const res = await axios.get("http://localhost:5000/api/user/logout", {
-          withCredentials: true, // Crucial if you are using cookies/sessions
+          withCredentials: true,
         });
 
         if (res.status === 200) {
@@ -20,8 +20,7 @@ const Logout = () => {
         }
       } catch (err) {
         console.error("Logout failed:", err);
-        // Even if the server fails, we often want to clear local state
-        // and redirect anyway to keep the UI in sync
+
         setUser(null);
         navigate("/login");
       }

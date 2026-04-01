@@ -8,6 +8,7 @@ export const AuthProvider = ({ children }) => {
   const getMe = async () => {
     try {
       setIsLoading(true);
+
       const res = await axios.get("http://localhost:5000/api/user/getUser");
 
       if (res.status === 200) {
@@ -26,6 +27,7 @@ export const AuthProvider = ({ children }) => {
     getMe();
   }, []);
 
+  
   return (
     <AuthContext.Provider value={{ user, setUser, isLoading, isError }}>
       {children}

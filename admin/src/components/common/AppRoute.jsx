@@ -28,7 +28,7 @@ const AppRoute = () => {
       <Route
         path="/"
         element={
-          !isLoading && user && user.role == "admin" ? (
+          !isLoading && user && user?.role === "admin" ? (
             <Navigate to="/admin/dashboard" />
           ) : (
             <Navigate to="/login" replace />
