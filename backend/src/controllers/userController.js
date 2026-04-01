@@ -75,10 +75,10 @@ export const login = async (req, res) => {
       },
     );
     const cookieOptions = {
-      httpOnly: true, // Correct: Prevents XSS attacks
-      secure: false, // Use 'false' for localhost (HTTP). Set to 'true' in production (HTTPS).
-      sameSite: "lax", // Vital for cross-site cookie sharing on localhost
-      maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      maxAge: 24 * 60 * 60 * 1000,
     };
 
     return res
