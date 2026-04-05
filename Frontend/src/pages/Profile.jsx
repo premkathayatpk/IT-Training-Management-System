@@ -53,8 +53,7 @@ const Profile = () => {
         </div>
       </div>
 
-      {/* Console log to see the raw data structure */}
-      {console.log("Profile Data:", user)}
+      {/* {console.log("Profile Data:", user)} */}
     </section>
   );
 };
