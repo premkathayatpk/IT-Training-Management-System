@@ -2,12 +2,24 @@ import { json } from "express";
 import Course from "../models/courseModel.js";
 
 export const createCourse = async (req, res) => {
-  const { title, syllabus, fee, description, enrollDeadline, prerequisites } =
-    req.body;
+  const {
+    title,
+    syllabus,
+    fee,
+    description,
+    enrollDeadline,
+    prerequisites,
+    category,
+  } = req.body;
 
   if (
-    (!title || !syllabus || !fee || !description || !enrollDeadline,
-    !prerequisites)
+    !title ||
+    !syllabus ||
+    !fee ||
+    !description ||
+    !enrollDeadline ||
+    !category ||
+    !prerequisites
   ) {
     return res.status(400).json({ message: "All field must be filled !" });
   }
@@ -24,6 +36,7 @@ export const createCourse = async (req, res) => {
       description,
       enrollDeadline,
       prerequisites,
+      category,
     });
     courseRes = await courseRes.save();
     res.status(200).json({ message: "Course Created successfully" });

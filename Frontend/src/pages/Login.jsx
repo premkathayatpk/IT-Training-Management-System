@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -11,11 +11,7 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // console.log(email, password);
     try {
-      // const loginData = { email, password };
-
-      //api call
       const response = await axios.post(
         "http://localhost:5000/api/user/login",
         { email, password },
@@ -23,10 +19,19 @@ const Login = () => {
       );
 
       if (response.status === 200 || response.status === 201) {
-        // console.log(response.data);
-        setUser(response.data.user);
+        const user = response.data.user;
+        if (user.role === "admin") {
+          alert("Invalid email or password");
+          return;
+        }
+
+        setUser(user);
         alert("Login Successful!");
-        navigate("/");
+        if (user.role === "instructor") {
+          navigate("/instructor");
+        } else if (user.role === "student") {
+          navigate("/");
+        }
       }
     } catch (error) {
       const message = error.response?.data?.message || "Login failed";

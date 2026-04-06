@@ -39,6 +39,17 @@ const courseSchema = new mongoose.Schema(
       trim: true,
       default: "None",
     },
+    category: {
+      type: String,
+      enum: [
+        "Web Development",
+        "App Development",
+        "Design",
+        "Infrastructure & Security",
+        "Business & Marketing",
+      ],
+      required: true,
+    },
   },
   { timestamps: true },
 );
