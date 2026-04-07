@@ -1,5 +1,5 @@
-import BlogCard from "../components/blog/BlogCard";
-import BlogSection from "../components/blog/BlogSection";
+import BlogCard from "../../components/blog/BlogCard";
+import BlogSection from "../../components/blog/BlogSection";
 
 const Blog = () => {
   return (

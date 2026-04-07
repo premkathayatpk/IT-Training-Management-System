@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AuthContext } from "../context/AuthProvider"; // Make sure the path is correct
+import { AuthContext } from "../../context/AuthProvider"; // Make sure the path is correct
 
 const Profile = () => {
   // 1. Consume the context

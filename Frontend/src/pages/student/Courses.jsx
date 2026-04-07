@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import AppRoutes from "../components/common/AppRoutes";
+import AppRoutes from "../../components/common/AppRoutes";
 
 const Courses = () => {
   return (
@@ -14,7 +14,6 @@ const Courses = () => {
         </div>
       </section>
       <section className="bg-gray-200 py-5 px-5">
-        
         <Outlet />
       </section>
     </main>
